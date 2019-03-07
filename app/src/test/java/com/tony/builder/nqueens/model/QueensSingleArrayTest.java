@@ -3,6 +3,8 @@ package com.tony.builder.nqueens.model;
 import org.junit.Test;
 
 public class QueensSingleArrayTest {
+    boolean isSolved = false;
+    boolean isFinished = false;
     @Test
     public void testQueensModel() {
         QueensModel queensModel = new QueensSingleArray();
@@ -20,18 +22,22 @@ public class QueensSingleArrayTest {
             @Override
             public void onSolution(int count, int[] position) {
                 System.out.println("onSolution (" + count + ")");
+                isSolved = true;
             }
 
             @Override
             public void onFinished(int solutionCount) {
                 System.out.println("onFinished (" + solutionCount + ")");
+                isFinished = true;
             }
         });
         queensModel.onStart(8);
-        for (int i = 0; i < 100; i++) {
+        int stepCount = 0;
+        while (!isFinished) {
+            stepCount++;
             queensModel.onNext();
             queensModel.print();
-            System.out.println("===============================");
+            System.out.println("===========step : "+stepCount+"====================");
         }
     }
 }

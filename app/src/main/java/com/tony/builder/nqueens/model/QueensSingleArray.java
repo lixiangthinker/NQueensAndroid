@@ -112,7 +112,7 @@ public class QueensSingleArray implements QueensModel{
         for (int i = 0; i < DIMENSION; i++) {
             position[i] = POSITION_NOT_SET;
         }
-        state = IterState.INIT;
+        state = IterState.QUEEN_MOVED;
         position[mCurrentLayer] = POSITION_NOT_SET;
         solutionCount = 0;
     }
@@ -121,41 +121,33 @@ public class QueensSingleArray implements QueensModel{
     public void onNext() {
         switch (state) {
             case INIT:
-                position[mCurrentLayer]++;
                 state = IterState.QUEEN_MOVED;
-                notifyQueenMoved(position[mCurrentLayer], mCurrentLayer);
                 break;
             case QUEEN_MOVED:
                 if (mCurrentLayer >= 0) {
+                    position[mCurrentLayer]++;
+                    notifyQueenMoved(position[mCurrentLayer], mCurrentLayer);
                     if (position[mCurrentLayer] < DIMENSION && !isAvailable(mCurrentLayer)){
-                        position[mCurrentLayer]++;
-                        notifyQueenMoved(position[mCurrentLayer], mCurrentLayer);
+                        // invalid position wait to click();
                     } else {
-                        state = IterState.LAYER_MOVED;
-                    }
-                } else {
-                    state = IterState.FINISHED;
-                }
-                break;
-            case LAYER_MOVED:
-                if (mCurrentLayer >= 0) {
-                    if (position[mCurrentLayer] < DIMENSION) {
-                        if (mCurrentLayer == DIMENSION - 1) {
-                            // get a solution.
-                            solutionCount++;
-                            notifySolution(solutionCount, position);
+                        //state = IterState.LAYER_MOVED;
+                        if (position[mCurrentLayer] < DIMENSION) {
+                            if (mCurrentLayer == DIMENSION - 1) {
+                                // get a solution.
+                                solutionCount++;
+                                notifySolution(solutionCount, position);
+                            } else {
+                                // continue to check next layer.
+                                mCurrentLayer++;
+                                notifyLayerMoved(mCurrentLayer-1, mCurrentLayer);
+                            }
                         } else {
-                            // continue to check next layer.
-                            mCurrentLayer++;
-                            notifyLayerMoved(mCurrentLayer-1, mCurrentLayer);
+                            position[mCurrentLayer] = POSITION_NOT_SET;
+                            notifyQueenMoved(position[mCurrentLayer], mCurrentLayer);
+                            mCurrentLayer--;
+                            notifyLayerMoved(mCurrentLayer+1, mCurrentLayer);
                         }
-                    } else {
-                        position[mCurrentLayer] = POSITION_NOT_SET;
-                        notifyQueenMoved(position[mCurrentLayer], mCurrentLayer);
-                        mCurrentLayer--;
-                        notifyLayerMoved(mCurrentLayer+1, mCurrentLayer);
                     }
-                    state = IterState.QUEEN_MOVED;
                 } else {
                     state = IterState.FINISHED;
                 }
