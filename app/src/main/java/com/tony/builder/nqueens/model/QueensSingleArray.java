@@ -115,6 +115,7 @@ public class QueensSingleArray implements QueensModel{
         state = IterState.QUEEN_MOVED;
         position[mCurrentLayer] = POSITION_NOT_SET;
         solutionCount = 0;
+        notifyStarted();
     }
 
     @Override
@@ -163,6 +164,12 @@ public class QueensSingleArray implements QueensModel{
     private void notifyQueenMoved(int x, int y) {
         if (listener != null) {
             listener.onMoveChess(x, y);
+        }
+    }
+
+    private void notifyStarted() {
+        if (listener != null) {
+            listener.onStarted();
         }
     }
 

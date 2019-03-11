@@ -2,6 +2,7 @@ package com.tony.builder.nqueens.model;
 
 public interface QueensModel {
     interface EventListener {
+        void onStarted();
         void onMoveChess(int x, int y);
         void onMoveLayer(int oldLayer, int newLayer);
         void onSolution(int count, int[] position);

@@ -4,7 +4,6 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.tony.builder.nqueens.model.QueensModel;
-import com.tony.builder.nqueens.model.QueensSingleArray;
 import com.tony.builder.nqueens.utils.AppExecutors;
 
 import javax.inject.Inject;
@@ -17,6 +16,7 @@ public class QueensViewModel extends ViewModel {
     private static final String TAG = "QueensViewModel";
     private MutableLiveData<Integer> mCurrentLayer;
     private MutableLiveData<ChessMoveEvent> mChessMoveEvent;
+    private MutableLiveData<Boolean> isStarted;
 
     private AppExecutors executors;
     private SharedPreferences sharedPreferences;
@@ -32,6 +32,19 @@ public class QueensViewModel extends ViewModel {
     private void setQueensModel(QueensModel queensModel) {
         this.queensModel = queensModel;
         queensModel.setEventListener(new QueensModel.EventListener() {
+
+            @Override
+            public void onStarted() {
+                Log.d(TAG, "QueensModel.EventListener onStarted");
+                executors.mainThread().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (isStarted != null) {
+                            isStarted.setValue(true);
+                        }
+                    }
+                });
+            }
 
             @Override
             public void onMoveChess(final int oldX, final int newX) {
@@ -71,6 +84,14 @@ public class QueensViewModel extends ViewModel {
             @Override
             public void onFinished(int solutionCount) {
                 Log.d(TAG, "onFinished, (" + solutionCount + ")");
+                executors.mainThread().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (isStarted != null) {
+                            isStarted.setValue(false);
+                        }
+                    }
+                });
             }
         });
     }
@@ -98,5 +119,13 @@ public class QueensViewModel extends ViewModel {
             mChessMoveEvent = new MutableLiveData<>();
         }
         return mChessMoveEvent;
+    }
+
+    public LiveData<Boolean> getIsStarted() {
+        if (isStarted == null) {
+            isStarted = new MutableLiveData<>();
+            isStarted.setValue(false);
+        }
+        return isStarted;
     }
 }

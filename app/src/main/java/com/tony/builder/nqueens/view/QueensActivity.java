@@ -51,6 +51,20 @@ public class QueensActivity extends DaggerAppCompatActivity {
     }
 
     private void subscribeEvent(QueensViewModel viewModel) {
+        viewModel.getIsStarted().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean isStarted) {
+                if (isStarted) {
+                    btnPlay.setEnabled(true);
+                    btnNext.setEnabled(true);
+                    resetChess();
+                } else {
+                    btnPlay.setEnabled(false);
+                    btnNext.setEnabled(false);
+                }
+            }
+        });
+
         viewModel.getCurrentLayer().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer currentLayer) {
@@ -64,6 +78,15 @@ public class QueensActivity extends DaggerAppCompatActivity {
                 moveChess(event.currentLayer, event.newX, event.oldX);
             }
         });
+    }
+
+    private void resetChess() {
+        for (ImageView chess : ivQueenCheeses) {
+            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) chess.getLayoutParams();
+            int offset = (int) PixlConverter.convertDpToPixel(25, this);
+            layoutParams.setMarginStart(offset);
+            chess.setLayoutParams(layoutParams);
+        }
     }
 
     private void moveChess(int currentLayer, int newX, int oldX) {
@@ -83,7 +106,9 @@ public class QueensActivity extends DaggerAppCompatActivity {
 
     private void initButtons() {
         btnPlay = findViewById(R.id.btnPlay);
+        btnPlay.setEnabled(false);
         btnNext = findViewById(R.id.btnNext);
+        btnNext.setEnabled(false);
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
