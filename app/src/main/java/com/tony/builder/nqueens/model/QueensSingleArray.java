@@ -102,7 +102,7 @@ public class QueensSingleArray implements QueensModel{
         LAYER_MOVED,
         FINISHED,
     }
-    private IterState state;
+    private IterState state = IterState.INIT;
     private int mCurrentLayer = 0;
 
     @Override

@@ -14,7 +14,7 @@ abstract public class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(QueensViewModel.class)
-    abstract ViewModel bindGameBoardViewModel(QueensViewModel gameBoardViewmodel);
+    abstract ViewModel bindQueensViewModel(QueensViewModel queensViewmodel);
 
     @Binds
     abstract ViewModelProvider.Factory bindViewModelFactory(QueensViewModelFactory factory);

@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.tony.builder.nqueens.model.QueensModel;
+import com.tony.builder.nqueens.model.QueensSingleArray;
 import com.tony.builder.nqueens.utils.AppExecutors;
 
 import javax.inject.Inject;
@@ -15,7 +16,7 @@ import androidx.lifecycle.ViewModel;
 public class QueensViewModel extends ViewModel {
     private static final String TAG = "QueensViewModel";
     private MutableLiveData<Integer> mCurrentLayer;
-    private MutableLiveData<Integer> mCurrentXPosition;
+    private MutableLiveData<ChessMoveEvent> mChessMoveEvent;
 
     private AppExecutors executors;
     private SharedPreferences sharedPreferences;
@@ -28,13 +29,31 @@ public class QueensViewModel extends ViewModel {
         setQueensModel(queensModel);
     }
 
+    public QueensViewModel() {
+        executors = new AppExecutors();
+        queensModel = new QueensSingleArray();
+        setQueensModel(queensModel);
+    }
+
     private void setQueensModel(QueensModel queensModel) {
         this.queensModel = queensModel;
         queensModel.setEventListener(new QueensModel.EventListener() {
 
             @Override
-            public void onMoveChess(int oldX, int newX) {
+            public void onMoveChess(final int oldX, final int newX) {
                 Log.d(TAG, "onMoveChess, (" + oldX + "," + newX + ")");
+                executors.mainThread().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mChessMoveEvent != null) {
+                            ChessMoveEvent event = new ChessMoveEvent();
+                            event.oldX = oldX;
+                            event.newX = newX;
+                            event.currentLayer = mCurrentLayer.getValue();
+                            mChessMoveEvent.setValue(event);
+                        }
+                    }
+                });
             }
 
             @Override
@@ -75,14 +94,15 @@ public class QueensViewModel extends ViewModel {
     public LiveData<Integer> getCurrentLayer() {
         if (mCurrentLayer == null) {
             mCurrentLayer = new MutableLiveData<>();
+            mCurrentLayer.setValue(0);
         }
         return mCurrentLayer;
     }
 
-    public LiveData<Integer> getCurrentXPosition() {
-        if (mCurrentXPosition == null) {
-            mCurrentXPosition = new MutableLiveData<>();
+    public LiveData<ChessMoveEvent> getChessMoveEvent() {
+        if (mChessMoveEvent == null) {
+            mChessMoveEvent = new MutableLiveData<>();
         }
-        return mCurrentXPosition;
+        return mChessMoveEvent;
     }
 }

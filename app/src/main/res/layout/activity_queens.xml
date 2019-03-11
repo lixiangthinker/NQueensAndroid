@@ -4,6 +4,194 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/main_background"
     tools:context=".view.QueensActivity">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:paddingEnd="20dp"
+        android:text="@string/app_name"
+        android:textColor="@color/font_color_main"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvBestBg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/board_background"
+        android:gravity="center_horizontal"
+        android:padding="16dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/tvTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tvTitle"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvSolutionCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Solutions"
+        android:textColor="@color/font_color_main"
+        app:layout_constraintBottom_toTopOf="@+id/tvCounts"
+        app:layout_constraintEnd_toEndOf="@+id/tvBestBg"
+        app:layout_constraintStart_toStartOf="@+id/tvBestBg"
+        app:layout_constraintTop_toTopOf="@+id/tvBestBg" />
+
+    <TextView
+        android:id="@+id/tvCounts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="92"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvBestBg"
+        app:layout_constraintEnd_toEndOf="@+id/tvBestBg"
+        app:layout_constraintStart_toStartOf="@+id/tvBestBg" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clChessBoard"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/chess_board"
+        app:layout_constraintBottom_toTopOf="@+id/btnPlay"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnStart">
+
+        <ImageView
+            android:id="@+id/ivChessQueen0"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="25dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/chess_queen" />
+
+        <ImageView
+            android:id="@+id/ivChessQueen1"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="64dp"
+            android:layout_marginTop="64dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/chess_queen" />
+
+        <ImageView
+            android:id="@+id/ivChessQueen2"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="103dp"
+            android:layout_marginTop="103dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/chess_queen" />
+
+        <ImageView
+            android:id="@+id/ivChessQueen3"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="142dp"
+            android:layout_marginTop="142dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/chess_queen" />
+
+        <ImageView
+            android:id="@+id/ivChessQueen4"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="181dp"
+            android:layout_marginTop="181dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/chess_queen" />
+
+        <ImageView
+            android:id="@+id/ivChessQueen5"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="220dp"
+            android:layout_marginTop="220dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/chess_queen" />
+
+        <ImageView
+            android:id="@+id/ivChessQueen6"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="259dp"
+            android:layout_marginTop="259dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/chess_queen" />
+
+        <ImageView
+            android:id="@+id/ivChessQueen7"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="300dp"
+            android:layout_marginTop="300dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/chess_queen" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageButton
+        android:id="@+id/btnNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btnPlay"
+        app:srcCompat="@drawable/ic_skip_next_black_24dp" />
+
+    <ImageButton
+        android:id="@+id/btnPlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnNext"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_play_arrow_black_24dp" />
+
+    <Button
+        android:id="@+id/btnStart"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Start"
+        app:layout_constraintBottom_toTopOf="@+id/clChessBoard"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
