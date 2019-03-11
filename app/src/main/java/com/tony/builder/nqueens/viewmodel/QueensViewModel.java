@@ -29,12 +29,6 @@ public class QueensViewModel extends ViewModel {
         setQueensModel(queensModel);
     }
 
-    public QueensViewModel() {
-        executors = new AppExecutors();
-        queensModel = new QueensSingleArray();
-        setQueensModel(queensModel);
-    }
-
     private void setQueensModel(QueensModel queensModel) {
         this.queensModel = queensModel;
         queensModel.setEventListener(new QueensModel.EventListener() {

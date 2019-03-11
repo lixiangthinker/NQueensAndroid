@@ -1,5 +1,7 @@
 package com.tony.builder.nqueens.di;
 
+import com.tony.builder.nqueens.model.QueensModel;
+import com.tony.builder.nqueens.model.QueensSingleArray;
 import com.tony.builder.nqueens.view.QueensViewModelFactory;
 import com.tony.builder.nqueens.viewmodel.QueensViewModel;
 
@@ -18,4 +20,7 @@ abstract public class ViewModelModule {
 
     @Binds
     abstract ViewModelProvider.Factory bindViewModelFactory(QueensViewModelFactory factory);
+
+    @Binds
+    abstract QueensModel bindQueensModel(QueensSingleArray queensSingleArray);
 }

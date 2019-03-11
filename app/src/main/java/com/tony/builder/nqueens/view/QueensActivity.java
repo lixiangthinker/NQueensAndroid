@@ -32,8 +32,8 @@ public class QueensActivity extends DaggerAppCompatActivity {
     ImageButton btnNext;
     Button btnStart;
 
-//    @Inject
-//    ViewModelProvider.Factory viewModelFactory;
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
     QueensViewModel viewModel;
 
     @Override
@@ -45,7 +45,7 @@ public class QueensActivity extends DaggerAppCompatActivity {
         setContentView(R.layout.activity_queens);
         chessBoard = findViewById(R.id.clChessBoard);
         initChessImageView();
-        viewModel = ViewModelProviders.of(this).get(QueensViewModel.class);
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(QueensViewModel.class);
         subscribeEvent(viewModel);
         initButtons();
     }
