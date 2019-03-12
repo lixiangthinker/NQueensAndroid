@@ -34,8 +34,10 @@ public class QueensActivity extends DaggerAppCompatActivity {
     ImageButton btnPlayOrPause;
     ImageButton btnNext;
     TextView tvStepCounter;
-    TextView tvSolustionCounts;
+    TextView tvSolutionCounts;
     Context mContext;
+
+    PlayPauseButtonOnClickListener listener;
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -53,10 +55,11 @@ public class QueensActivity extends DaggerAppCompatActivity {
         initChessImageView();
         ivCurrentLayer = findViewById(R.id.ivCurrentLayer);
         tvStepCounter = findViewById(R.id.tvStepCounter);
-        tvSolustionCounts = findViewById(R.id.tvCounts);
+        tvSolutionCounts = findViewById(R.id.tvCounts);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(QueensViewModel.class);
         subscribeEvent(viewModel);
-        initButtons();
+        listener = new PlayPauseButtonOnClickListener();
+        initButtons(listener);
     }
 
     private void subscribeEvent(QueensViewModel viewModel) {
@@ -98,7 +101,10 @@ public class QueensActivity extends DaggerAppCompatActivity {
         viewModel.getSolutionEvent().observe(this, new Observer<SolutionEvent>() {
             @Override
             public void onChanged(SolutionEvent solutionEvent) {
-                tvSolustionCounts.setText(solutionEvent.solutionCount);
+                Log.d(TAG, "getSolutionEvent " + solutionEvent.solutionCount);
+                tvSolutionCounts.setText(""+solutionEvent.solutionCount);
+                listener.setPlayOrPause(PlayPauseButtonOnClickListener.PLAY_VALUE);
+                btnPlayOrPause.setImageDrawable(mContext.getDrawable(R.drawable.ic_play_arrow_black_24dp));
             }
         });
     }
@@ -158,35 +164,43 @@ public class QueensActivity extends DaggerAppCompatActivity {
         layoutParams.setMargins(layoutParams.leftMargin, offset, 0, 0);
     }
 
-    private void initButtons() {
-        btnPlayOrPause = findViewById(R.id.btnPlay);
-        btnPlayOrPause.setOnClickListener(new View.OnClickListener() {
-            private final int PLAY_VALUE = 1;
-            private final int PAUSE_VALUE = 2;
-            private int playOrPause = PLAY_VALUE;
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "button play onClick");
-                if (playOrPause == PLAY_VALUE) {
-                    boolean isStarted = false;
-                    if (viewModel != null) {
-                        isStarted = viewModel.getIsStarted().getValue();
-                        if (!isStarted) {
-                            viewModel.onStart(8);
-                        }
-                        viewModel.onPlay();
+    class PlayPauseButtonOnClickListener implements View.OnClickListener {
+        final static int PLAY_VALUE = 1;
+        final static int PAUSE_VALUE = 2;
+        private int playOrPause = PLAY_VALUE;
+
+        public void setPlayOrPause(int value) {
+            playOrPause = value;
+        }
+
+        @Override
+        public void onClick(View v) {
+            Log.d(TAG, "button play onClick");
+            if (playOrPause == PLAY_VALUE) {
+                boolean isStarted = false;
+                if (viewModel != null) {
+                    isStarted = viewModel.getIsStarted().getValue();
+                    if (!isStarted) {
+                        viewModel.onStart(BOARD_DIMENSION);
                     }
-                    playOrPause = PAUSE_VALUE;
-                    btnPlayOrPause.setImageDrawable(mContext.getDrawable(R.drawable.ic_pause_black_24dp));
-                } else {
-                    if (viewModel != null) {
-                        viewModel.onPause();
-                    }
-                    playOrPause = PLAY_VALUE;
-                    btnPlayOrPause.setImageDrawable(mContext.getDrawable(R.drawable.ic_play_arrow_black_24dp));
+                    viewModel.onPlay();
                 }
+                playOrPause = PAUSE_VALUE;
+                btnPlayOrPause.setImageDrawable(mContext.getDrawable(R.drawable.ic_pause_black_24dp));
+            } else {
+                if (viewModel != null) {
+                    viewModel.onPause();
+                }
+                playOrPause = PLAY_VALUE;
+                btnPlayOrPause.setImageDrawable(mContext.getDrawable(R.drawable.ic_play_arrow_black_24dp));
             }
-        });
+        }
+    }
+
+    private void initButtons(PlayPauseButtonOnClickListener listener) {
+        btnPlayOrPause = findViewById(R.id.btnPlay);
+        btnPlayOrPause.setOnClickListener(listener);
+
         btnNext = findViewById(R.id.btnNext);
         btnNext.setEnabled(false);
         btnNext.setOnClickListener(new View.OnClickListener() {

@@ -92,6 +92,7 @@ public class QueensViewModel extends ViewModel {
                         int[] solution = new int[position.length];
                         System.arraycopy(position, 0, solution, 0, solution.length);
                         solutionEvent.solution = solution;
+                        solutionEvent.solutionCount = count;
                         if (mSolutionEvent != null) {
                             mSolutionEvent.setValue(solutionEvent);
                         }
@@ -141,7 +142,7 @@ public class QueensViewModel extends ViewModel {
                     }
                     queensModel.onNext();
                     try {
-                        Thread.sleep(300);
+                        Thread.sleep(100);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -193,9 +194,6 @@ public class QueensViewModel extends ViewModel {
     public LiveData<SolutionEvent> getSolutionEvent() {
         if (mSolutionEvent == null) {
             mSolutionEvent = new MutableLiveData<>();
-            SolutionEvent solutionEvent = new SolutionEvent();
-            solutionEvent.solutionCount = 0;
-            solutionEvent.solution = null;
         }
         return mSolutionEvent;
     }
