@@ -47,16 +47,16 @@ public class QueensViewModel extends ViewModel {
             }
 
             @Override
-            public void onMoveChess(final int oldX, final int newX) {
-                Log.d(TAG, "onMoveChess, (" + oldX + "," + newX + ")");
+            public void onMoveChess(final int x, final int y) {
+                Log.d(TAG, "onMoveChess, (" + x + "," + y + ")");
                 executors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
                         if (mChessMoveEvent != null) {
                             ChessMoveEvent event = new ChessMoveEvent();
-                            event.oldX = oldX;
-                            event.newX = newX;
-                            event.currentLayer = mCurrentLayer.getValue();
+                            event.oldX = x-1;
+                            event.newX = x;
+                            event.currentLayer = y;
                             mChessMoveEvent.setValue(event);
                         }
                     }

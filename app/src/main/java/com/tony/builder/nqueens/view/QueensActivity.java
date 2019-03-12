@@ -16,6 +16,7 @@ import android.widget.ImageView;
 
 import com.tony.builder.nqueens.R;
 import com.tony.builder.nqueens.utils.PixlConverter;
+import com.tony.builder.nqueens.viewmodel.ChessBoardConstant;
 import com.tony.builder.nqueens.viewmodel.ChessMoveEvent;
 import com.tony.builder.nqueens.viewmodel.QueensViewModel;
 
@@ -85,16 +86,21 @@ public class QueensActivity extends DaggerAppCompatActivity {
 
     private void resetLayerArrow() {
         ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) ivCurrentLayer.getLayoutParams();
-        int marginTop = (int) PixlConverter.convertDpToPixel(23, this);
+        int marginTop = (int) PixlConverter.convertDpToPixel(ChessBoardConstant.columnStart[0], this);
         int marginStart = (int) PixlConverter.convertDpToPixel(0, this);
-        layoutParams.setMargins(marginStart, marginTop, 0, 0);
+        layoutParams.topMargin = marginTop;
+        layoutParams.leftMargin = marginStart;
+        ivCurrentLayer.setLayoutParams(layoutParams);
     }
 
     private void resetChess() {
-        for (ImageView chess : ivQueenCheeses) {
+        for (int index = 0; index < ivQueenCheeses.length; index++) {
+            ImageView chess = ivQueenCheeses[index];
             ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) chess.getLayoutParams();
-            int offset = (int) PixlConverter.convertDpToPixel(23, this);
-            layoutParams.setMarginStart(offset);
+            int marginTopPixel = (int) PixlConverter.convertDpToPixel(ChessBoardConstant.columnStart[index], this);
+            int marginLeftPixel = (int) PixlConverter.convertDpToPixel(ChessBoardConstant.leftMargin, this);
+            layoutParams.topMargin = marginTopPixel;
+            layoutParams.leftMargin = marginLeftPixel;
             chess.setLayoutParams(layoutParams);
         }
     }
@@ -116,10 +122,9 @@ public class QueensActivity extends DaggerAppCompatActivity {
 
     private void moveArrow(Integer currentLayer) {
         ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) ivCurrentLayer.getLayoutParams();
-        int marginTop = (int) PixlConverter.convertDpToPixel(currentLayer * 25, this);
-        int offset = (int) PixlConverter.convertDpToPixel(currentLayer * 39, this);
+        int offset = (int) PixlConverter.convertDpToPixel(ChessBoardConstant.columnStart[currentLayer], this);
         Log.d(TAG, "moveArrow, offset = " + offset);
-        layoutParams.setMargins(layoutParams.leftMargin, marginTop + offset, 0, 0);
+        layoutParams.setMargins(layoutParams.leftMargin, offset, 0, 0);
     }
 
     private void initButtons() {
