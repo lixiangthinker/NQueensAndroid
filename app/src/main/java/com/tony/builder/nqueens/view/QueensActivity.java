@@ -102,6 +102,7 @@ public class QueensActivity extends DaggerAppCompatActivity {
             layoutParams.topMargin = marginTopPixel;
             layoutParams.leftMargin = marginLeftPixel;
             chess.setLayoutParams(layoutParams);
+            chess.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -112,16 +113,23 @@ public class QueensActivity extends DaggerAppCompatActivity {
             return;
         }
         ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) chess.getLayoutParams();
-        int marginStartPixel = (int) PixlConverter.convertDpToPixel(ChessBoardConstant.leftMargin, this);
-        int marginTopPixel = (int) PixlConverter.convertDpToPixel(ChessBoardConstant.columnStart[currentLayer], this);
         // back track, reset chess
-        if (newX != -1) {
-            marginStartPixel = (int) PixlConverter.convertDpToPixel(ChessBoardConstant.rowStart[newX], this);
-            marginTopPixel = (int) PixlConverter.convertDpToPixel(ChessBoardConstant.columnStart[currentLayer], this);
+        if (newX != -1 && newX != 0) {
+            int marginStartPixel = (int) PixlConverter.convertDpToPixel(ChessBoardConstant.rowStart[newX], this);
+            int marginTopPixel = (int) PixlConverter.convertDpToPixel(ChessBoardConstant.columnStart[currentLayer], this);
+            layoutParams.leftMargin = marginStartPixel;
+            layoutParams.topMargin = marginTopPixel;
+            chess.setLayoutParams(layoutParams);
+        } else if (newX == 0) {
+            chess.setVisibility(View.VISIBLE);
+            int marginStartPixel = (int) PixlConverter.convertDpToPixel(ChessBoardConstant.rowStart[newX], this);
+            int marginTopPixel = (int) PixlConverter.convertDpToPixel(ChessBoardConstant.columnStart[currentLayer], this);
+            layoutParams.leftMargin = marginStartPixel;
+            layoutParams.topMargin = marginTopPixel;
+            chess.setLayoutParams(layoutParams);
+        } else {
+            chess.setVisibility(View.INVISIBLE);
         }
-        layoutParams.leftMargin = marginStartPixel;
-        layoutParams.topMargin = marginTopPixel;
-        chess.setLayoutParams(layoutParams);
     }
 
     private void moveArrow(Integer currentLayer) {
