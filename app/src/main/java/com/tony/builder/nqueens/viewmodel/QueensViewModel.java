@@ -120,6 +120,11 @@ public class QueensViewModel extends ViewModel {
         queensModel.onStart(dimension);
     }
 
+    public void onReset(int dimension) {
+        paused = true;
+        queensModel.onStart(dimension);
+    }
+
     public void onNext() {
         Log.d(TAG, "onNext next button clicked");
         Integer counter = getStepCounter().getValue();

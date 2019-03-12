@@ -33,6 +33,7 @@ public class QueensActivity extends DaggerAppCompatActivity {
     ImageView ivCurrentLayer;
     ImageButton btnPlayOrPause;
     ImageButton btnNext;
+    ImageButton btnReset;
     TextView tvStepCounter;
     TextView tvSolutionCounts;
     Context mContext;
@@ -103,10 +104,14 @@ public class QueensActivity extends DaggerAppCompatActivity {
             public void onChanged(SolutionEvent solutionEvent) {
                 Log.d(TAG, "getSolutionEvent " + solutionEvent.solutionCount);
                 tvSolutionCounts.setText(""+solutionEvent.solutionCount);
-                listener.setPlayOrPause(PlayPauseButtonOnClickListener.PLAY_VALUE);
-                btnPlayOrPause.setImageDrawable(mContext.getDrawable(R.drawable.ic_play_arrow_black_24dp));
+                resetPlayButton();
             }
         });
+    }
+
+    private void resetPlayButton() {
+        listener.setPlayOrPause(PlayPauseButtonOnClickListener.PLAY_VALUE);
+        btnPlayOrPause.setImageDrawable(mContext.getDrawable(R.drawable.ic_play_arrow_black_24dp));
     }
 
     private void resetLayerArrow() {
@@ -210,6 +215,23 @@ public class QueensActivity extends DaggerAppCompatActivity {
                 if (viewModel != null) {
                     viewModel.onNext();
                 }
+            }
+        });
+
+        btnReset = findViewById(R.id.btnReset);
+        btnReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "button reset onClick");
+                if (viewModel != null) {
+                    viewModel.onReset(BOARD_DIMENSION);
+                }
+                tvStepCounter.setText("Current step: " + 0);
+                tvSolutionCounts.setText("" + 0);
+                resetChess();
+                resetLayerArrow();
+                resetPlayButton();
+                btnNext.setEnabled(false);
             }
         });
     }

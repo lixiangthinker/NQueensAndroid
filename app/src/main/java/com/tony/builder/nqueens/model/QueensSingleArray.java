@@ -107,6 +107,7 @@ public class QueensSingleArray implements QueensModel{
 
     @Override
     public void onStart(int dimension) {
+        mCurrentLayer = 0;
         DIMENSION = dimension;
         position = new int[dimension];
         for (int i = 0; i < DIMENSION; i++) {
