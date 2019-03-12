@@ -20,19 +20,19 @@ import androidx.annotation.NonNull;
  */
 @Singleton
 public class AppExecutors {
-    private final Executor diskIO;
+    private final Executor gameController;
     private final Executor networkIO;
     private final Executor mainThread;
 
     @Inject
     public AppExecutors() {
-        this.diskIO = Executors.newSingleThreadExecutor();
+        this.gameController = Executors.newSingleThreadExecutor();
         this.networkIO = Executors.newFixedThreadPool(3);
         this.mainThread = new MainThreadExecutor();
     }
 
-    public Executor diskIO() {
-        return diskIO;
+    public Executor gameController() {
+        return gameController;
     }
 
     public Executor networkIO() {

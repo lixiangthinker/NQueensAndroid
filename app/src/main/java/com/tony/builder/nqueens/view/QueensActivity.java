@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.tony.builder.nqueens.R;
 import com.tony.builder.nqueens.utils.PixlConverter;
@@ -32,6 +33,7 @@ public class QueensActivity extends DaggerAppCompatActivity {
     ImageButton btnPlay;
     ImageButton btnNext;
     Button btnStart;
+    TextView tvStepCounter;
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -47,6 +49,7 @@ public class QueensActivity extends DaggerAppCompatActivity {
         chessBoard = findViewById(R.id.clChessBoard);
         initChessImageView();
         ivCurrentLayer = findViewById(R.id.ivCurrentLayer);
+        tvStepCounter = findViewById(R.id.tvStepCounter);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(QueensViewModel.class);
         subscribeEvent(viewModel);
         initButtons();
@@ -80,6 +83,13 @@ public class QueensActivity extends DaggerAppCompatActivity {
             @Override
             public void onChanged(ChessMoveEvent event) {
                 moveChess(event.currentLayer, event.newX);
+            }
+        });
+
+        viewModel.getStepCounter().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                tvStepCounter.setText("Current step: " + integer);
             }
         });
     }
@@ -142,6 +152,15 @@ public class QueensActivity extends DaggerAppCompatActivity {
     private void initButtons() {
         btnPlay = findViewById(R.id.btnPlay);
         btnPlay.setEnabled(false);
+        btnPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "button play onClick");
+                if (viewModel != null) {
+                    viewModel.onPlay();
+                }
+            }
+        });
         btnNext = findViewById(R.id.btnNext);
         btnNext.setEnabled(false);
         btnNext.setOnClickListener(new View.OnClickListener() {

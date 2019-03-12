@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModel;
 
 public class QueensViewModel extends ViewModel {
     private static final String TAG = "QueensViewModel";
+    private MutableLiveData<Integer> mStepCounter;
     private MutableLiveData<Integer> mCurrentLayer;
     private MutableLiveData<ChessMoveEvent> mChessMoveEvent;
     private MutableLiveData<Boolean> isStarted;
@@ -21,6 +22,8 @@ public class QueensViewModel extends ViewModel {
     private AppExecutors executors;
     private SharedPreferences sharedPreferences;
     private QueensModel queensModel;
+
+    private boolean solution = false;
 
     @Inject
     public QueensViewModel(AppExecutors executors, QueensModel queensModel, SharedPreferences sharedPreferences) {
@@ -79,6 +82,7 @@ public class QueensViewModel extends ViewModel {
             @Override
             public void onSolution(int count, int[] position) {
                 Log.d(TAG, "onSolution, (" + count + ")");
+                solution = true;
             }
 
             @Override
@@ -103,7 +107,32 @@ public class QueensViewModel extends ViewModel {
 
     public void onNext() {
         Log.d(TAG, "onNext next button clicked");
+        Integer counter = getStepCounter().getValue();
+        if (mStepCounter != null) {
+            mStepCounter.setValue(counter + 1);
+        }
         queensModel.onNext();
+    }
+
+    public void onPlay() {
+        Log.d(TAG, "onPlay play button clicked");
+        executors.gameController().execute(new Runnable() {
+            @Override
+            public void run() {
+                while(!solution) {
+                    Integer counter = getStepCounter().getValue();
+                    if (mStepCounter != null && counter != null) {
+                        mStepCounter.postValue(counter + 1);
+                    }
+                    queensModel.onNext();
+                    try {
+                        Thread.sleep(300);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 
     public LiveData<Integer> getCurrentLayer() {
@@ -127,5 +156,13 @@ public class QueensViewModel extends ViewModel {
             isStarted.setValue(false);
         }
         return isStarted;
+    }
+
+    public LiveData<Integer> getStepCounter() {
+        if (mStepCounter == null) {
+            mStepCounter = new MutableLiveData<>();
+            mStepCounter.setValue(0);
+        }
+        return mStepCounter;
     }
 }
