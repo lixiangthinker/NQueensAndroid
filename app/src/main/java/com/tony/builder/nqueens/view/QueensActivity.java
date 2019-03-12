@@ -11,7 +11,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,6 +20,7 @@ import com.tony.builder.nqueens.utils.PixlConverter;
 import com.tony.builder.nqueens.viewmodel.ChessBoardConstant;
 import com.tony.builder.nqueens.viewmodel.ChessMoveEvent;
 import com.tony.builder.nqueens.viewmodel.QueensViewModel;
+import com.tony.builder.nqueens.viewmodel.SolutionEvent;
 
 import javax.inject.Inject;
 
@@ -31,10 +31,10 @@ public class QueensActivity extends DaggerAppCompatActivity {
     ConstraintLayout chessBoard;
     ImageView[] ivQueenCheeses;
     ImageView ivCurrentLayer;
-    ImageButton btnPlay;
+    ImageButton btnPlayOrPause;
     ImageButton btnNext;
-    Button btnStart;
     TextView tvStepCounter;
+    TextView tvSolustionCounts;
     Context mContext;
 
     @Inject
@@ -53,6 +53,7 @@ public class QueensActivity extends DaggerAppCompatActivity {
         initChessImageView();
         ivCurrentLayer = findViewById(R.id.ivCurrentLayer);
         tvStepCounter = findViewById(R.id.tvStepCounter);
+        tvSolustionCounts = findViewById(R.id.tvCounts);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(QueensViewModel.class);
         subscribeEvent(viewModel);
         initButtons();
@@ -63,12 +64,10 @@ public class QueensActivity extends DaggerAppCompatActivity {
             @Override
             public void onChanged(Boolean isStarted) {
                 if (isStarted) {
-                    btnPlay.setEnabled(true);
                     btnNext.setEnabled(true);
                     resetChess();
                     resetLayerArrow();
                 } else {
-                    btnPlay.setEnabled(false);
                     btnNext.setEnabled(false);
                 }
             }
@@ -93,6 +92,13 @@ public class QueensActivity extends DaggerAppCompatActivity {
             @Override
             public void onChanged(Integer integer) {
                 tvStepCounter.setText("Current step: " + integer);
+            }
+        });
+
+        viewModel.getSolutionEvent().observe(this, new Observer<SolutionEvent>() {
+            @Override
+            public void onChanged(SolutionEvent solutionEvent) {
+                tvSolustionCounts.setText(solutionEvent.solutionCount);
             }
         });
     }
@@ -153,9 +159,8 @@ public class QueensActivity extends DaggerAppCompatActivity {
     }
 
     private void initButtons() {
-        btnPlay = findViewById(R.id.btnPlay);
-        btnPlay.setEnabled(false);
-        btnPlay.setOnClickListener(new View.OnClickListener() {
+        btnPlayOrPause = findViewById(R.id.btnPlay);
+        btnPlayOrPause.setOnClickListener(new View.OnClickListener() {
             private final int PLAY_VALUE = 1;
             private final int PAUSE_VALUE = 2;
             private int playOrPause = PLAY_VALUE;
@@ -163,17 +168,22 @@ public class QueensActivity extends DaggerAppCompatActivity {
             public void onClick(View v) {
                 Log.d(TAG, "button play onClick");
                 if (playOrPause == PLAY_VALUE) {
+                    boolean isStarted = false;
                     if (viewModel != null) {
+                        isStarted = viewModel.getIsStarted().getValue();
+                        if (!isStarted) {
+                            viewModel.onStart(8);
+                        }
                         viewModel.onPlay();
                     }
                     playOrPause = PAUSE_VALUE;
-                    btnPlay.setImageDrawable(mContext.getDrawable(R.drawable.ic_pause_black_24dp));
+                    btnPlayOrPause.setImageDrawable(mContext.getDrawable(R.drawable.ic_pause_black_24dp));
                 } else {
                     if (viewModel != null) {
                         viewModel.onPause();
                     }
                     playOrPause = PLAY_VALUE;
-                    btnPlay.setImageDrawable(mContext.getDrawable(R.drawable.ic_play_arrow_black_24dp));
+                    btnPlayOrPause.setImageDrawable(mContext.getDrawable(R.drawable.ic_play_arrow_black_24dp));
                 }
             }
         });
@@ -185,16 +195,6 @@ public class QueensActivity extends DaggerAppCompatActivity {
                 Log.d(TAG, "button next onClick");
                 if (viewModel != null) {
                     viewModel.onNext();
-                }
-            }
-        });
-        btnStart = findViewById(R.id.btnStart);
-        btnStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "button start onClick");
-                if (viewModel != null) {
-                    viewModel.onStart(8);
                 }
             }
         });

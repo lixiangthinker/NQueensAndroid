@@ -17,6 +17,7 @@ public class QueensViewModel extends ViewModel {
     private MutableLiveData<Integer> mStepCounter;
     private MutableLiveData<Integer> mCurrentLayer;
     private MutableLiveData<ChessMoveEvent> mChessMoveEvent;
+    private MutableLiveData<SolutionEvent> mSolutionEvent;
     private MutableLiveData<Boolean> isStarted;
 
     private AppExecutors executors;
@@ -58,7 +59,7 @@ public class QueensViewModel extends ViewModel {
                     public void run() {
                         if (mChessMoveEvent != null) {
                             ChessMoveEvent event = new ChessMoveEvent();
-                            event.oldX = x-1;
+                            event.oldX = x - 1;
                             event.newX = x;
                             event.currentLayer = y;
                             mChessMoveEvent.setValue(event);
@@ -81,9 +82,21 @@ public class QueensViewModel extends ViewModel {
             }
 
             @Override
-            public void onSolution(int count, int[] position) {
+            public void onSolution(final int count, final int[] position) {
                 Log.d(TAG, "onSolution, (" + count + ")");
                 solution = true;
+                executors.mainThread().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        SolutionEvent solutionEvent = new SolutionEvent();
+                        int[] solution = new int[position.length];
+                        System.arraycopy(position, 0, solution, 0, solution.length);
+                        solutionEvent.solution = solution;
+                        if (mSolutionEvent != null) {
+                            mSolutionEvent.setValue(solutionEvent);
+                        }
+                    }
+                });
             }
 
             @Override
@@ -121,7 +134,7 @@ public class QueensViewModel extends ViewModel {
         executors.gameController().execute(new Runnable() {
             @Override
             public void run() {
-                while(!solution && !paused) {
+                while (!solution && !paused) {
                     Integer counter = getStepCounter().getValue();
                     if (mStepCounter != null && counter != null) {
                         mStepCounter.postValue(counter + 1);
@@ -132,6 +145,10 @@ public class QueensViewModel extends ViewModel {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+                }
+
+                if (solution) {
+                    solution = false;
                 }
             }
         });
@@ -171,5 +188,15 @@ public class QueensViewModel extends ViewModel {
             mStepCounter.setValue(0);
         }
         return mStepCounter;
+    }
+
+    public LiveData<SolutionEvent> getSolutionEvent() {
+        if (mSolutionEvent == null) {
+            mSolutionEvent = new MutableLiveData<>();
+            SolutionEvent solutionEvent = new SolutionEvent();
+            solutionEvent.solutionCount = 0;
+            solutionEvent.solution = null;
+        }
+        return mSolutionEvent;
     }
 }

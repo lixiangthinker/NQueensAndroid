@@ -14,7 +14,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:paddingEnd="20dp"
-        android:text="@string/app_name"
+        android:text="8 Queens"
         android:textColor="@color/font_color_main"
         android:textSize="48sp"
         android:textStyle="bold"
@@ -56,7 +56,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:text="92"
+        android:text="0"
         android:textColor="@color/white"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="@+id/tvBestBg"
@@ -67,13 +67,14 @@
         android:id="@+id/clChessBoard"
         android:layout_width="370dp"
         android:layout_height="370dp"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/chess_board"
         app:layout_constraintBottom_toTopOf="@+id/btnPlay"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnStart">
+        app:layout_constraintTop_toBottomOf="@+id/tvTitle">
 
         <ImageView
             android:id="@+id/ivChessQueen0"
@@ -189,20 +190,6 @@
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/ic_play_arrow_black_24dp" />
-
-    <Button
-        android:id="@+id/btnStart"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="Start"
-        app:layout_constraintBottom_toTopOf="@+id/clChessBoard"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
     <TextView
         android:id="@+id/tvStepCounter"
