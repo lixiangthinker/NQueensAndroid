@@ -127,12 +127,14 @@ public class QueensSingleArray implements QueensModel{
             case QUEEN_MOVED:
                 if (mCurrentLayer >= 0) {
                     position[mCurrentLayer]++;
-                    notifyQueenMoved(position[mCurrentLayer], mCurrentLayer);
+
                     if (position[mCurrentLayer] < DIMENSION && !isAvailable(mCurrentLayer)){
                         // invalid position wait to click();
+                        notifyQueenMoved(position[mCurrentLayer], mCurrentLayer);
                     } else {
                         //state = IterState.LAYER_MOVED;
                         if (position[mCurrentLayer] < DIMENSION) {
+                            notifyQueenMoved(position[mCurrentLayer], mCurrentLayer);
                             if (mCurrentLayer == DIMENSION - 1) {
                                 // get a solution.
                                 solutionCount++;

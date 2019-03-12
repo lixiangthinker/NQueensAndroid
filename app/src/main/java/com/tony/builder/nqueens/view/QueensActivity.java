@@ -79,7 +79,7 @@ public class QueensActivity extends DaggerAppCompatActivity {
         viewModel.getChessMoveEvent().observe(this, new Observer<ChessMoveEvent>() {
             @Override
             public void onChanged(ChessMoveEvent event) {
-                moveChess(event.currentLayer, event.newX, event.oldX);
+                moveChess(event.currentLayer, event.newX);
             }
         });
     }
@@ -105,18 +105,22 @@ public class QueensActivity extends DaggerAppCompatActivity {
         }
     }
 
-    private void moveChess(int currentLayer, int newX, int oldX) {
+    private void moveChess(int currentLayer, int newX) {
         ImageView chess = ivQueenCheeses[currentLayer];
         if (chess == null) {
             Log.e(TAG, "could not get chess layer = " + currentLayer);
             return;
         }
-
         ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) chess.getLayoutParams();
-        int currentMargin = layoutParams.getMarginStart();
-        int offset = (int) PixlConverter.convertDpToPixel((newX - oldX) * 39, this);
-        Log.d(TAG, "currentMargin = " + currentMargin + " offset = " + offset + " old = " + oldX + " new = " + newX);
-        layoutParams.setMarginStart(currentMargin + offset);
+        int marginStartPixel = (int) PixlConverter.convertDpToPixel(ChessBoardConstant.leftMargin, this);
+        int marginTopPixel = (int) PixlConverter.convertDpToPixel(ChessBoardConstant.columnStart[currentLayer], this);
+        // back track, reset chess
+        if (newX != -1) {
+            marginStartPixel = (int) PixlConverter.convertDpToPixel(ChessBoardConstant.rowStart[newX], this);
+            marginTopPixel = (int) PixlConverter.convertDpToPixel(ChessBoardConstant.columnStart[currentLayer], this);
+        }
+        layoutParams.leftMargin = marginStartPixel;
+        layoutParams.topMargin = marginTopPixel;
         chess.setLayoutParams(layoutParams);
     }
 
