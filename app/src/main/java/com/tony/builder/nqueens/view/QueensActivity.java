@@ -1,7 +1,6 @@
 package com.tony.builder.nqueens.view;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
@@ -28,6 +27,7 @@ public class QueensActivity extends DaggerAppCompatActivity {
 
     ConstraintLayout chessBoard;
     ImageView[] ivQueenCheeses;
+    ImageView ivCurrentLayer;
     ImageButton btnPlay;
     ImageButton btnNext;
     Button btnStart;
@@ -45,6 +45,7 @@ public class QueensActivity extends DaggerAppCompatActivity {
         setContentView(R.layout.activity_queens);
         chessBoard = findViewById(R.id.clChessBoard);
         initChessImageView();
+        ivCurrentLayer = findViewById(R.id.ivCurrentLayer);
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(QueensViewModel.class);
         subscribeEvent(viewModel);
         initButtons();
@@ -58,6 +59,7 @@ public class QueensActivity extends DaggerAppCompatActivity {
                     btnPlay.setEnabled(true);
                     btnNext.setEnabled(true);
                     resetChess();
+                    resetLayerArrow();
                 } else {
                     btnPlay.setEnabled(false);
                     btnNext.setEnabled(false);
@@ -69,6 +71,7 @@ public class QueensActivity extends DaggerAppCompatActivity {
             @Override
             public void onChanged(Integer currentLayer) {
                 Log.d(TAG, "current layer = " + currentLayer);
+                moveArrow(currentLayer);
             }
         });
 
@@ -80,10 +83,17 @@ public class QueensActivity extends DaggerAppCompatActivity {
         });
     }
 
+    private void resetLayerArrow() {
+        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) ivCurrentLayer.getLayoutParams();
+        int marginTop = (int) PixlConverter.convertDpToPixel(23, this);
+        int marginStart = (int) PixlConverter.convertDpToPixel(0, this);
+        layoutParams.setMargins(marginStart, marginTop, 0, 0);
+    }
+
     private void resetChess() {
         for (ImageView chess : ivQueenCheeses) {
             ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) chess.getLayoutParams();
-            int offset = (int) PixlConverter.convertDpToPixel(25, this);
+            int offset = (int) PixlConverter.convertDpToPixel(23, this);
             layoutParams.setMarginStart(offset);
             chess.setLayoutParams(layoutParams);
         }
@@ -102,6 +112,14 @@ public class QueensActivity extends DaggerAppCompatActivity {
         Log.d(TAG, "currentMargin = " + currentMargin + " offset = " + offset + " old = " + oldX + " new = " + newX);
         layoutParams.setMarginStart(currentMargin + offset);
         chess.setLayoutParams(layoutParams);
+    }
+
+    private void moveArrow(Integer currentLayer) {
+        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) ivCurrentLayer.getLayoutParams();
+        int marginTop = (int) PixlConverter.convertDpToPixel(currentLayer * 25, this);
+        int offset = (int) PixlConverter.convertDpToPixel(currentLayer * 39, this);
+        Log.d(TAG, "moveArrow, offset = " + offset);
+        layoutParams.setMargins(layoutParams.leftMargin, marginTop + offset, 0, 0);
     }
 
     private void initButtons() {

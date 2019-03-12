@@ -102,7 +102,7 @@ public class QueensViewModel extends ViewModel {
     }
 
     public void onNext() {
-        Log.d(TAG, "onStart start button clicked");
+        Log.d(TAG, "onNext next button clicked");
         queensModel.onNext();
     }
 

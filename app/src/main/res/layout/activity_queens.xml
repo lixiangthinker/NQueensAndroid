@@ -65,8 +65,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clChessBoard"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="370dp"
+        android:layout_height="370dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/chess_board"
         app:layout_constraintBottom_toTopOf="@+id/btnPlay"
@@ -77,83 +77,93 @@
 
         <ImageView
             android:id="@+id/ivChessQueen0"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="25dp"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="22dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/chess_queen" />
 
         <ImageView
             android:id="@+id/ivChessQueen1"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="64dp"
-            android:layout_marginTop="64dp"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="63dp"
+            android:layout_marginTop="63dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/chess_queen" />
 
         <ImageView
             android:id="@+id/ivChessQueen2"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="103dp"
-            android:layout_marginTop="103dp"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="105dp"
+            android:layout_marginTop="105dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/chess_queen" />
 
         <ImageView
             android:id="@+id/ivChessQueen3"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="142dp"
-            android:layout_marginTop="142dp"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="145dp"
+            android:layout_marginTop="145dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/chess_queen" />
 
         <ImageView
             android:id="@+id/ivChessQueen4"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="181dp"
-            android:layout_marginTop="181dp"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="185dp"
+            android:layout_marginTop="185dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/chess_queen" />
 
         <ImageView
             android:id="@+id/ivChessQueen5"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="220dp"
-            android:layout_marginTop="220dp"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="225dp"
+            android:layout_marginTop="225dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/chess_queen" />
 
         <ImageView
             android:id="@+id/ivChessQueen6"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="259dp"
-            android:layout_marginTop="259dp"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="268dp"
+            android:layout_marginTop="268dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/chess_queen" />
 
         <ImageView
             android:id="@+id/ivChessQueen7"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="300dp"
-            android:layout_marginTop="300dp"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="308dp"
+            android:layout_marginTop="308dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/chess_queen" />
+
+        <ImageView
+            android:id="@+id/ivCurrentLayer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="25dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_arrow_forward_black_24dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageButton
