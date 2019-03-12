@@ -24,6 +24,7 @@ public class QueensViewModel extends ViewModel {
     private QueensModel queensModel;
 
     private boolean solution = false;
+    private boolean paused = false;
 
     @Inject
     public QueensViewModel(AppExecutors executors, QueensModel queensModel, SharedPreferences sharedPreferences) {
@@ -108,7 +109,7 @@ public class QueensViewModel extends ViewModel {
     public void onNext() {
         Log.d(TAG, "onNext next button clicked");
         Integer counter = getStepCounter().getValue();
-        if (mStepCounter != null) {
+        if (mStepCounter != null && counter != null) {
             mStepCounter.setValue(counter + 1);
         }
         queensModel.onNext();
@@ -116,10 +117,11 @@ public class QueensViewModel extends ViewModel {
 
     public void onPlay() {
         Log.d(TAG, "onPlay play button clicked");
+        paused = false;
         executors.gameController().execute(new Runnable() {
             @Override
             public void run() {
-                while(!solution) {
+                while(!solution && !paused) {
                     Integer counter = getStepCounter().getValue();
                     if (mStepCounter != null && counter != null) {
                         mStepCounter.postValue(counter + 1);
@@ -133,6 +135,11 @@ public class QueensViewModel extends ViewModel {
                 }
             }
         });
+    }
+
+    public void onPause() {
+        Log.d(TAG, "onPause pause button clicked");
+        paused = true;
     }
 
     public LiveData<Integer> getCurrentLayer() {

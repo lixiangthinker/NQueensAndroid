@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import dagger.android.support.DaggerAppCompatActivity;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,6 +35,7 @@ public class QueensActivity extends DaggerAppCompatActivity {
     ImageButton btnNext;
     Button btnStart;
     TextView tvStepCounter;
+    Context mContext;
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -46,6 +48,7 @@ public class QueensActivity extends DaggerAppCompatActivity {
             getSupportActionBar().hide();
         }
         setContentView(R.layout.activity_queens);
+        mContext = this;
         chessBoard = findViewById(R.id.clChessBoard);
         initChessImageView();
         ivCurrentLayer = findViewById(R.id.ivCurrentLayer);
@@ -153,11 +156,24 @@ public class QueensActivity extends DaggerAppCompatActivity {
         btnPlay = findViewById(R.id.btnPlay);
         btnPlay.setEnabled(false);
         btnPlay.setOnClickListener(new View.OnClickListener() {
+            private final int PLAY_VALUE = 1;
+            private final int PAUSE_VALUE = 2;
+            private int playOrPause = PLAY_VALUE;
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "button play onClick");
-                if (viewModel != null) {
-                    viewModel.onPlay();
+                if (playOrPause == PLAY_VALUE) {
+                    if (viewModel != null) {
+                        viewModel.onPlay();
+                    }
+                    playOrPause = PAUSE_VALUE;
+                    btnPlay.setImageDrawable(mContext.getDrawable(R.drawable.ic_pause_black_24dp));
+                } else {
+                    if (viewModel != null) {
+                        viewModel.onPause();
+                    }
+                    playOrPause = PLAY_VALUE;
+                    btnPlay.setImageDrawable(mContext.getDrawable(R.drawable.ic_play_arrow_black_24dp));
                 }
             }
         });
