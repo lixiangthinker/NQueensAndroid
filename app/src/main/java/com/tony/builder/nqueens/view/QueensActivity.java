@@ -8,7 +8,6 @@ import dagger.android.support.DaggerAppCompatActivity;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.Log;
@@ -65,6 +64,7 @@ public class QueensActivity extends DaggerAppCompatActivity {
         ivCurrentLayer = findViewById(R.id.ivCurrentLayer);
         tvStepCounter = findViewById(R.id.tvStepCounter);
         tvSolutionCounts = findViewById(R.id.tvCounts);
+        tvSolutionCounts.setText(getString(R.string.solution_counts, 0));
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(QueensViewModel.class);
         subscribeEvent(viewModel);
         listener = new PlayPauseButtonOnClickListener();
@@ -117,7 +117,8 @@ public class QueensActivity extends DaggerAppCompatActivity {
         viewModel.getStepCounter().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
-                tvStepCounter.setText("Current step: " + integer);
+
+                tvStepCounter.setText(getString(R.string.current_step, integer));
             }
         });
 
@@ -125,7 +126,7 @@ public class QueensActivity extends DaggerAppCompatActivity {
             @Override
             public void onChanged(SolutionEvent solutionEvent) {
                 Log.d(TAG, "getSolutionEvent " + solutionEvent.solutionCount);
-                tvSolutionCounts.setText(""+solutionEvent.solutionCount);
+                tvSolutionCounts.setText(getString(R.string.solution_counts, solutionEvent.solutionCount));
                 resetPlayButton();
             }
         });
@@ -204,10 +205,10 @@ public class QueensActivity extends DaggerAppCompatActivity {
         public void onClick(View v) {
             Log.d(TAG, "button play onClick");
             if (playOrPause == PLAY_VALUE) {
-                boolean isStarted = false;
+                Boolean isStarted;
                 if (viewModel != null) {
                     isStarted = viewModel.getIsStarted().getValue();
-                    if (!isStarted) {
+                    if (isStarted != null && !isStarted) {
                         viewModel.onStart(BOARD_DIMENSION);
                     }
                     viewModel.onPlay();
@@ -249,8 +250,8 @@ public class QueensActivity extends DaggerAppCompatActivity {
                 if (viewModel != null) {
                     viewModel.onReset(BOARD_DIMENSION);
                 }
-                tvStepCounter.setText("Current step: " + 0);
-                tvSolutionCounts.setText("" + 0);
+                tvStepCounter.setText(getString(R.string.current_step, 0));
+                tvSolutionCounts.setText(getString(R.string.solution_counts, 0));
                 resetChess();
                 resetLayerArrow();
                 resetPlayButton();
