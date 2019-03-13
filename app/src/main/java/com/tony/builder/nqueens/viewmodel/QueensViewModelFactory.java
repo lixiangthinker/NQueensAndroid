@@ -1,4 +1,4 @@
-package com.tony.builder.nqueens.view;
+package com.tony.builder.nqueens.viewmodel;
 
 import java.util.Map;
 

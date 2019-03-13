@@ -5,7 +5,7 @@ import android.content.Context;
 import com.tony.builder.nqueens.GameApplication;
 import com.tony.builder.nqueens.model.QueensModel;
 import com.tony.builder.nqueens.model.QueensSingleArray;
-import com.tony.builder.nqueens.view.QueensViewModelFactory;
+import com.tony.builder.nqueens.viewmodel.QueensViewModelFactory;
 import com.tony.builder.nqueens.viewmodel.QueensViewModel;
 
 import androidx.lifecycle.ViewModel;
