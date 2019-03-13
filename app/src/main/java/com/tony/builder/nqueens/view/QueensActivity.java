@@ -8,6 +8,8 @@ import dagger.android.support.DaggerAppCompatActivity;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +23,8 @@ import com.tony.builder.nqueens.viewmodel.ChessBoardConstant;
 import com.tony.builder.nqueens.viewmodel.ChessMoveEvent;
 import com.tony.builder.nqueens.viewmodel.QueensViewModel;
 import com.tony.builder.nqueens.viewmodel.SolutionEvent;
+
+import java.io.IOException;
 
 import javax.inject.Inject;
 
@@ -39,6 +43,10 @@ public class QueensActivity extends DaggerAppCompatActivity {
     Context mContext;
 
     PlayPauseButtonOnClickListener listener;
+
+    SoundPool mSoundPool = null;
+    private int streamIdStart = -1;
+    private int streamIdChessMove = -1;
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -61,6 +69,19 @@ public class QueensActivity extends DaggerAppCompatActivity {
         subscribeEvent(viewModel);
         listener = new PlayPauseButtonOnClickListener();
         initButtons(listener);
+        initSoundEffects();
+    }
+
+    private void initSoundEffects() {
+        mSoundPool = new SoundPool.Builder()
+                .setMaxStreams(10)
+                .build();
+        try {
+            streamIdStart = mSoundPool.load(getApplicationContext().getAssets().openFd("start.mp3"), 1);
+            streamIdChessMove =  mSoundPool.load(getApplicationContext().getAssets().openFd("chess_move.mp3"), 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void subscribeEvent(QueensViewModel viewModel) {
@@ -89,6 +110,7 @@ public class QueensActivity extends DaggerAppCompatActivity {
             @Override
             public void onChanged(ChessMoveEvent event) {
                 moveChess(event.currentLayer, event.newX);
+                mSoundPool.play(streamIdChessMove, 10, 10, 1, 0, 1.0f);
             }
         });
 
@@ -192,6 +214,7 @@ public class QueensActivity extends DaggerAppCompatActivity {
                 }
                 playOrPause = PAUSE_VALUE;
                 btnPlayOrPause.setImageDrawable(mContext.getDrawable(R.drawable.ic_pause_black_24dp));
+                mSoundPool.play(streamIdStart, 10, 10, 1, 0, 1.0f);
             } else {
                 if (viewModel != null) {
                     viewModel.onPause();
@@ -256,5 +279,14 @@ public class QueensActivity extends DaggerAppCompatActivity {
     private int getId(String idName) {
         Resources resources = getResources();
         return resources.getIdentifier(idName, "id", getPackageName());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mSoundPool != null) {
+            mSoundPool.release();
+            mSoundPool = null;
+        }
     }
 }
