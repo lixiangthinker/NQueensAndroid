@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.tony.builder.nqueens.R;
 import com.tony.builder.nqueens.utils.PixlConverter;
+import com.tony.builder.nqueens.utils.SoundManager;
 import com.tony.builder.nqueens.viewmodel.ChessBoardConstant;
 import com.tony.builder.nqueens.viewmodel.ChessMoveEvent;
 import com.tony.builder.nqueens.viewmodel.QueensViewModel;
@@ -43,10 +44,8 @@ public class QueensActivity extends DaggerAppCompatActivity {
 
     PlayPauseButtonOnClickListener listener;
 
-    SoundPool mSoundPool = null;
-    private int streamIdStart = -1;
-    private int streamIdChessMove = -1;
-
+    @Inject
+    SoundManager mSoundManager;
     @Inject
     ViewModelProvider.Factory viewModelFactory;
     QueensViewModel viewModel;
@@ -73,15 +72,13 @@ public class QueensActivity extends DaggerAppCompatActivity {
     }
 
     private void initSoundEffects() {
-        mSoundPool = new SoundPool.Builder()
-                .setMaxStreams(10)
-                .build();
         try {
-            streamIdStart = mSoundPool.load(getApplicationContext().getAssets().openFd("start.mp3"), 1);
-            streamIdChessMove =  mSoundPool.load(getApplicationContext().getAssets().openFd("chess_move.mp3"), 1);
+            mSoundManager.addSound(0, "start.mp3");
+            mSoundManager.addSound(1, "chess_move.mp3");
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     private void subscribeEvent(QueensViewModel viewModel) {
@@ -110,7 +107,7 @@ public class QueensActivity extends DaggerAppCompatActivity {
             @Override
             public void onChanged(ChessMoveEvent event) {
                 moveChess(event.currentLayer, event.newX);
-                mSoundPool.play(streamIdChessMove, 10, 10, 1, 0, 1.0f);
+                mSoundManager.playSound(1);
             }
         });
 
@@ -215,7 +212,7 @@ public class QueensActivity extends DaggerAppCompatActivity {
                 }
                 playOrPause = PAUSE_VALUE;
                 btnPlayOrPause.setImageDrawable(mContext.getDrawable(R.drawable.ic_pause_black_24dp));
-                mSoundPool.play(streamIdStart, 10, 10, 1, 0, 1.0f);
+                mSoundManager.playSound(0);
             } else {
                 if (viewModel != null) {
                     viewModel.onPause();
@@ -285,9 +282,9 @@ public class QueensActivity extends DaggerAppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mSoundPool != null) {
-            mSoundPool.release();
-            mSoundPool = null;
+        if (mSoundManager != null) {
+            mSoundManager.release();
+            mSoundManager = null;
         }
     }
 }
