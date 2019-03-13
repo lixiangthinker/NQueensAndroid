@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">8 Queens</string>
+    <string name="solutions">Solutions</string>
+    <string name="counts_zero">0</string>
+    <string name="img_description_0">Queen in column 0</string>
+    <string name="img_description_1">Queen in column 1</string>
+    <string name="img_description_2">Queen in column 2</string>
+    <string name="img_description_3">Queen in column 3</string>
+    <string name="img_description_4">Queen in column 4</string>
+    <string name="img_description_5">Queen in column 5</string>
+    <string name="img_description_6">Queen in column 6</string>
+    <string name="img_description_7">Queen in column 7</string>
+    <string name="img_description_pointer">Pointer of current layer</string>
+    <string name="img_description_button_next">next button</string>
+    <string name="img_description_button_play_pause">play or pause button</string>
+    <string name="img_description_button_reset">reset button</string>
+    <string name="current_step">current step: 0</string>
 </resources>

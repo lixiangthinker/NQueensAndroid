@@ -13,8 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-        android:paddingEnd="20dp"
-        android:text="8 Queens"
+        android:layout_marginEnd="24dp"
+        android:text="@string/app_name"
         android:textColor="@color/font_color_main"
         android:textSize="48sp"
         android:textStyle="bold"
@@ -44,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Solutions"
+        android:text="@string/solutions"
         android:textColor="@color/font_color_main"
         app:layout_constraintBottom_toTopOf="@+id/tvCounts"
         app:layout_constraintEnd_toEndOf="@+id/tvBestBg"
@@ -56,7 +56,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:text="0"
+        android:text="@string/counts_zero"
         android:textColor="@color/white"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="@+id/tvBestBg"
@@ -82,6 +82,7 @@
             android:layout_height="38dp"
             android:layout_marginStart="22dp"
             android:layout_marginTop="22dp"
+            android:contentDescription="@string/img_description_0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/chess_queen" />
@@ -92,6 +93,7 @@
             android:layout_height="38dp"
             android:layout_marginStart="63dp"
             android:layout_marginTop="63dp"
+            android:contentDescription="@string/img_description_1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/chess_queen" />
@@ -102,6 +104,7 @@
             android:layout_height="38dp"
             android:layout_marginStart="105dp"
             android:layout_marginTop="105dp"
+            android:contentDescription="@string/img_description_2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/chess_queen" />
@@ -112,6 +115,7 @@
             android:layout_height="38dp"
             android:layout_marginStart="145dp"
             android:layout_marginTop="145dp"
+            android:contentDescription="@string/img_description_3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/chess_queen" />
@@ -122,6 +126,7 @@
             android:layout_height="38dp"
             android:layout_marginStart="185dp"
             android:layout_marginTop="185dp"
+            android:contentDescription="@string/img_description_4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/chess_queen" />
@@ -132,6 +137,7 @@
             android:layout_height="38dp"
             android:layout_marginStart="225dp"
             android:layout_marginTop="225dp"
+            android:contentDescription="@string/img_description_5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/chess_queen" />
@@ -142,6 +148,7 @@
             android:layout_height="38dp"
             android:layout_marginStart="268dp"
             android:layout_marginTop="268dp"
+            android:contentDescription="@string/img_description_6"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/chess_queen" />
@@ -152,6 +159,7 @@
             android:layout_height="38dp"
             android:layout_marginStart="308dp"
             android:layout_marginTop="308dp"
+            android:contentDescription="@string/img_description_7"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/chess_queen" />
@@ -162,36 +170,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
             android:layout_marginTop="25dp"
+            android:contentDescription="@string/img_description_pointer"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_arrow_forward_black_24dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <ImageButton
-        android:id="@+id/btnNext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvStepCounter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btnPlay"
-        app:srcCompat="@drawable/ic_skip_next_black_24dp" />
-
-    <ImageButton
-        android:id="@+id/btnPlay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvStepCounter"
-        app:layout_constraintEnd_toStartOf="@+id/btnNext"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btnReset"
-        app:srcCompat="@drawable/ic_play_arrow_black_24dp" />
 
     <TextView
         android:id="@+id/tvStepCounter"
@@ -201,7 +184,7 @@
         android:background="@drawable/board_background"
         android:gravity="center"
         android:padding="8dp"
-        android:text="current step: 0"
+        android:text="@string/current_step"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.037"
@@ -209,11 +192,40 @@
         app:layout_constraintTop_toBottomOf="@+id/clChessBoard" />
 
     <ImageButton
+        android:id="@+id/btnNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_marginBottom="8dp"
+        android:contentDescription="@string/img_description_button_next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btnPlay"
+        app:layout_constraintTop_toBottomOf="@+id/tvStepCounter"
+        app:srcCompat="@drawable/ic_skip_next_black_24dp" />
+
+    <ImageButton
+        android:id="@+id/btnPlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_marginBottom="8dp"
+        android:contentDescription="@string/img_description_button_play_pause"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnNext"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btnReset"
+        app:layout_constraintTop_toBottomOf="@+id/tvStepCounter"
+        app:srcCompat="@drawable/ic_play_arrow_black_24dp" />
+
+    <ImageButton
         android:id="@+id/btnReset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:layout_marginBottom="8dp"
+        android:contentDescription="@string/img_description_button_reset"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnPlay"
         app:layout_constraintHorizontal_bias="0.5"
