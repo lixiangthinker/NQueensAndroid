@@ -1,5 +1,6 @@
 package com.tony.builder.nqueens.di;
 
+import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 

@@ -4,24 +4,31 @@ import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.util.Log;
 import android.util.SparseIntArray;
 
 import java.io.IOException;
 
-import javax.inject.Inject;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.OnLifecycleEvent;
 
-public class SoundManager {
+public class SoundManager implements LifecycleObserver {
+    private static final String TAG = "SoundManager";
     private SoundPool mSoundPool;
     private AudioManager mAudioManager;
     private SparseIntArray mSoundPoolArray;
     private Context mContext;
 
-    @Inject
     public SoundManager(Context context) {
+        Log.d(TAG, "SoundManager created");
         mContext = context;
         mSoundPool = new SoundPool.Builder().setMaxStreams(10).build();
         mSoundPoolArray = new SparseIntArray();
         mAudioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
+        LifecycleOwner lifecycleOwner = (LifecycleOwner) context;
+        lifecycleOwner.getLifecycle().addObserver(this);
     }
 
     /**
@@ -56,5 +63,11 @@ public class SoundManager {
             mSoundPool.release();
             mSoundPool = null;
         }
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    public void handleOnDestroy() {
+        Log.d(TAG, "handleOnDestroy");
+        release();
     }
 }
