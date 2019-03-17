@@ -8,7 +8,6 @@ import dagger.android.support.DaggerAppCompatActivity;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tony.builder.nqueens.R;
-import com.tony.builder.nqueens.utils.PixlConverter;
+import com.tony.builder.nqueens.utils.PixelConverter;
 import com.tony.builder.nqueens.utils.SoundManager;
 import com.tony.builder.nqueens.viewmodel.ChessBoardConstant;
 import com.tony.builder.nqueens.viewmodel.ChessMoveEvent;
@@ -49,6 +48,8 @@ public class QueensActivity extends DaggerAppCompatActivity {
     @Inject
     ViewModelProvider.Factory viewModelFactory;
     QueensViewModel viewModel;
+    @Inject
+    PixelConverter pixelConverter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,8 +137,8 @@ public class QueensActivity extends DaggerAppCompatActivity {
 
     private void resetLayerArrow() {
         ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) ivCurrentLayer.getLayoutParams();
-        int marginTop = (int) PixlConverter.convertDpToPixel(ChessBoardConstant.columnStart[0], this);
-        int marginStart = (int) PixlConverter.convertDpToPixel(0, this);
+        int marginTop = (int) pixelConverter.convertDpToPixel(ChessBoardConstant.columnStart[0]);
+        int marginStart = (int) pixelConverter.convertDpToPixel(0);
         layoutParams.topMargin = marginTop;
         layoutParams.leftMargin = marginStart;
         ivCurrentLayer.setLayoutParams(layoutParams);
@@ -147,8 +148,8 @@ public class QueensActivity extends DaggerAppCompatActivity {
         for (int index = 0; index < ivQueenCheeses.length; index++) {
             ImageView chess = ivQueenCheeses[index];
             ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) chess.getLayoutParams();
-            int marginTopPixel = (int) PixlConverter.convertDpToPixel(ChessBoardConstant.columnStart[index], this);
-            int marginLeftPixel = (int) PixlConverter.convertDpToPixel(ChessBoardConstant.leftMargin, this);
+            int marginTopPixel = (int) pixelConverter.convertDpToPixel(ChessBoardConstant.columnStart[index]);
+            int marginLeftPixel = (int) pixelConverter.convertDpToPixel(ChessBoardConstant.leftMargin);
             layoutParams.topMargin = marginTopPixel;
             layoutParams.leftMargin = marginLeftPixel;
             chess.setLayoutParams(layoutParams);
@@ -165,15 +166,15 @@ public class QueensActivity extends DaggerAppCompatActivity {
         ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) chess.getLayoutParams();
         // back track, reset chess
         if (newX != -1 && newX != 0) {
-            int marginStartPixel = (int) PixlConverter.convertDpToPixel(ChessBoardConstant.rowStart[newX], this);
-            int marginTopPixel = (int) PixlConverter.convertDpToPixel(ChessBoardConstant.columnStart[currentLayer], this);
+            int marginStartPixel = (int) pixelConverter.convertDpToPixel(ChessBoardConstant.rowStart[newX]);
+            int marginTopPixel = (int) pixelConverter.convertDpToPixel(ChessBoardConstant.columnStart[currentLayer]);
             layoutParams.leftMargin = marginStartPixel;
             layoutParams.topMargin = marginTopPixel;
             chess.setLayoutParams(layoutParams);
         } else if (newX == 0) {
             chess.setVisibility(View.VISIBLE);
-            int marginStartPixel = (int) PixlConverter.convertDpToPixel(ChessBoardConstant.rowStart[newX], this);
-            int marginTopPixel = (int) PixlConverter.convertDpToPixel(ChessBoardConstant.columnStart[currentLayer], this);
+            int marginStartPixel = (int) pixelConverter.convertDpToPixel(ChessBoardConstant.rowStart[newX]);
+            int marginTopPixel = (int) pixelConverter.convertDpToPixel(ChessBoardConstant.columnStart[currentLayer]);
             layoutParams.leftMargin = marginStartPixel;
             layoutParams.topMargin = marginTopPixel;
             chess.setLayoutParams(layoutParams);
@@ -184,7 +185,7 @@ public class QueensActivity extends DaggerAppCompatActivity {
 
     private void moveArrow(Integer currentLayer) {
         ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) ivCurrentLayer.getLayoutParams();
-        int offset = (int) PixlConverter.convertDpToPixel(ChessBoardConstant.columnStart[currentLayer], this);
+        int offset = (int) pixelConverter.convertDpToPixel(ChessBoardConstant.columnStart[currentLayer]);
         Log.d(TAG, "moveArrow, offset = " + offset);
         layoutParams.setMargins(layoutParams.leftMargin, offset, 0, 0);
     }
@@ -277,14 +278,5 @@ public class QueensActivity extends DaggerAppCompatActivity {
     private int getId(String idName) {
         Resources resources = getResources();
         return resources.getIdentifier(idName, "id", getPackageName());
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mSoundManager != null) {
-            mSoundManager.release();
-            mSoundManager = null;
-        }
     }
 }

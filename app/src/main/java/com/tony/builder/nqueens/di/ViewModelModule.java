@@ -1,10 +1,5 @@
 package com.tony.builder.nqueens.di;
 
-import android.content.Context;
-
-import com.tony.builder.nqueens.GameApplication;
-import com.tony.builder.nqueens.model.QueensModel;
-import com.tony.builder.nqueens.model.QueensSingleArray;
 import com.tony.builder.nqueens.viewmodel.QueensViewModelFactory;
 import com.tony.builder.nqueens.viewmodel.QueensViewModel;
 
@@ -23,10 +18,4 @@ abstract public class ViewModelModule {
 
     @Binds
     abstract ViewModelProvider.Factory bindViewModelFactory(QueensViewModelFactory factory);
-
-    @Binds
-    abstract QueensModel bindQueensModel(QueensSingleArray queensSingleArray);
-
-    @Binds
-    abstract Context bindContext(GameApplication gameApplication);
 }

@@ -1,14 +1,9 @@
 package com.tony.builder.nqueens.model;
 
-import javax.inject.Inject;
-
 public class QueensSingleArray implements QueensModel{
     private int DIMENSION;
     private int[] position;
     private final int POSITION_NOT_SET = -1;
-
-    @Inject
-    public QueensSingleArray() {}
 
     private int solutionCount = 0;
     public int getSolutionCount(int currentLayer) {
